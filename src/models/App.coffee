@@ -4,11 +4,11 @@ class window.App extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
     @redeal()
+    @set 'message', 'Good luck!'
 
 
   bust: ->
-    alert 'bust'
-    @redeal()
+    @set 'message', 'Bust!'
 
   playDealer: ->
     dealerHand = @get 'dealerHand'
@@ -20,6 +20,7 @@ class window.App extends Backbone.Model
     @gameOver()
 
   redeal: ->
+    @set 'message', 'Good luck!'
     deck = @get 'deck'
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
@@ -37,7 +38,6 @@ class window.App extends Backbone.Model
     playerHand = @get 'playerHand'
     dealerHand = @get 'dealerHand'
     if playerHand.maxScore() > dealerHand.maxScore() or dealerHand.minScore() > 21
-      console.log 'You win!'
+      @set 'message', 'You win!'
     else
-      console.log 'Dealer wins!'
-    @redeal()
+      @set 'message', 'Dealer wins!'

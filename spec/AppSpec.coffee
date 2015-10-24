@@ -9,6 +9,9 @@ describe 'app', ->
     expect(app.get('deck').length).to.equal(48)
 
   it 'should play cards for the dealer', ->
+    seven = new Card({rank: 7, suit: 2})
+    ten = new Card({rank: 5, suit: 2})
+    app.set('dealerHand', new Hand([seven, ten], app.get('deck')))
     cardCount = app.get('deck').length
     app.playDealer()
     expect(cardCount).to.not.equal(app.get('deck').length)
@@ -19,7 +22,7 @@ describe 'app', ->
     app.set('dealerHand', new Hand([seven, ten], app.get('deck')))
     cardCount = app.get('deck').length
     app.playDealer()
-    expect(cardCount - 4).to.equal(app.get('deck').length)
+    expect(cardCount).to.equal(app.get('deck').length)
 
   it 'should end the game if player is dealt 21', ->
     ace = new Card({rank: 1, suit: 2})
