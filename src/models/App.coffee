@@ -3,39 +3,41 @@
 class window.App extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
-    @set 'playerHand', deck.dealPlayer()
-    @set 'dealerHand', deck.dealDealer()
-    # @on 'all', alert, @
-    # @get 'hand'.on 'bust', alert @get 'hand'
-    playerHand = @get 'playerHand'
-    playerHand.on 'bust', @bust, @
-    playerHand.on 'stand', @playDealer, @
+    @redeal()
+
 
   bust: ->
     alert 'bust'
     @redeal()
 
   playDealer: ->
-    console.log 'dealer turn'
     dealerHand = @get 'dealerHand'
     playerHand = @get 'playerHand'
-    dealerHand.first().flip()
-
+    dealerHand.first().set('revealed', true)
     while dealerHand.scores()[1] < 17
+      console.log 'scores: ' + dealerHand.scores() + 'hitting on: ' + JSON.stringify(dealerHand)
       dealerHand.hit()
-
-    if playerHand.maxScore() > dealerHand.maxScore() or dealerHand.minScore() > 21
-      alert('You win!')
-    else
-      alert('Dealer wins!')
-
-    @redeal()
+    @gameOver()
 
   redeal: ->
     deck = @get 'deck'
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
     playerHand = @get 'playerHand'
+    if playerHand.maxScore() == 21
+      @gameOver()
     playerHand.on 'bust', @bust, @
-    playerHand.on 'stand', @playDealer, @    
+    playerHand.on 'stand', @playDealer, @
     @trigger 'redeal', @
+
+  blackjack: ->
+    alert('blackjack!')
+
+  gameOver: ->
+    playerHand = @get 'playerHand'
+    dealerHand = @get 'dealerHand'
+    if playerHand.maxScore() > dealerHand.maxScore() or dealerHand.minScore() > 21
+      console.log 'You win!'
+    else
+      console.log 'Dealer wins!'
+    @redeal()
