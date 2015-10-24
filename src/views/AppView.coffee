@@ -6,6 +6,13 @@ class window.AppView extends Backbone.View
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
+  disabledTemplate: _.template '
+    <button class="hit-button" disabled>Hit</button> <button class="stand-button" disabled>Stand</button>
+    <button class="redeal-button">Redeal</button>
+    <div class="messages"></div>
+    <div class="player-hand-container"></div>
+    <div class="dealer-hand-container"></div>
+  '
 
   events:
     'click .hit-button': -> @model.get('playerHand').hit()
